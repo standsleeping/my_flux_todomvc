@@ -13,7 +13,10 @@ var AppDispatcher = assign(new Dispatcher(), {
 
 // Store
 var EventEmitter = require('events').EventEmitter
-var _todos = {}
+var _todos = {
+  1: {id: 1, done: false, text: 'Number one'},
+  2: {id: 2, done: false, text: 'Number two'}
+}
 var create = function(text) {
   return {
     id: Date.now(),
@@ -64,12 +67,56 @@ var TodoStore = assign({}, EventEmitter.prototype, {
 })
 
 // Components
+var getTodoState = function() {
+  return {
+    allTodos: TodoStore.getAll()
+  }
+}
+
+
 var React = require('react')
-var Ryan = React.createClass({
+var TodoApp = React.createClass({
+  getInitialState: function() {
+    return getTodoState()
+  },
+  componentDidMount: function() {
+    TodoStore.addChangeListener(this._onChange)
+  },
+  componentWillUnmount: function() {
+    TodoStore.removeChangeListener(this._onChange)
+  },
   render: function() {
-    return <div><p>hi</p></div>
+    return <div>
+      <List allTodos={this.state.allTodos}/>
+
+          </div>
+  },
+  _onChange: function() {
+    this.setState(getTodoState())
   }
 })
 
-var element = React.createElement(Ryan, {})
+var List = React.createClass({
+  render: function() {
+    var allTodos = this.props.allTodos
+    var todos = []
+    for (var key in allTodos) {
+      todos.push(<TodoItem key={key} todo={allTodos[key]} />)
+    }
+    return (
+      <section id="main">
+          <ul id="todo-list">{todos}</ul>
+      </section>
+    )
+  }
+})
+
+var TodoItem = React.createClass({
+  render: function() {
+    var todo = this.props.todo
+    return <li>{todo.text}</li>
+  }
+})
+
+var element = React.createElement(TodoApp, {})
 React.render(element, document.querySelector('.container'))
