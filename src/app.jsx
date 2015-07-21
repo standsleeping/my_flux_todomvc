@@ -92,7 +92,6 @@ var TodoApp = React.createClass({
     return <div>
       <Header />
       <List allTodos={this.state.allTodos}/>
-
           </div>
   },
   _onChange: function() {
@@ -101,11 +100,39 @@ var TodoApp = React.createClass({
 })
 
 var Header = React.createClass({
-  render: function() {
-    return <span><input onBlur={this.done}></input><button>Enter</button></span>
+  getInitialState: function() {
+    return {
+      text: ''
+    }
   },
-  done: function() {
-    TodoActions.create(event.target.value)
+  
+  handleInputChange: function(event) {
+    this.setState({text: event.target.value})
+  },
+  
+  render: function() {
+    return (
+    <div className="input-group">
+      <input 
+        value={this.state.text}
+        onChange={this.handleInputChange}
+        type="text"
+        className="form-control"
+      />
+      <span className="input-group-btn">
+        <button
+          onClick={this.handleClick}
+          className="btn btn-default"
+          type="button">
+          Add
+        </button>
+      </span>
+    </div>
+        )
+  },
+  
+  handleClick: function() {
+    TodoActions.create(this.state.text)
   }
 })
 
