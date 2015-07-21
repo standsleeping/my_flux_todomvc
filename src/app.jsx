@@ -3,7 +3,6 @@ var assign = require('object-assign')
 // Actions:
 var TodoActions = {
   create: function(text) {
-    console.log('TodoActions::create')
     AppDispatcher.handleViewAction({
       actionType: 'TODO_CREATE',
       text: text
@@ -15,7 +14,6 @@ var TodoActions = {
 var Dispatcher = require('flux').Dispatcher
 var AppDispatcher = assign(new Dispatcher(), {
   handleViewAction: function(action) {
-    console.log('AppDispatcher::handleViewAction')
     this.dispatch({
       source: 'VIEW_ACTION',
       action: action
@@ -30,7 +28,6 @@ var _todos = {
   2: {id: 2, done: false, text: 'Number two'}
 }
 var create = function(text) {
-  console.log('create!')
   var id = Date.now()
   _todos[id] = {
     id: Date.now(),
@@ -57,16 +54,12 @@ var TodoStore = assign({}, EventEmitter.prototype, {
   },
 
   dispatcherIndex: AppDispatcher.register(function(payload) {
-    console.log('huh?')
     var action = payload.action
     var text
-    console.log(action.actionType)
     switch(action.actionType) {
 
       case 'TODO_CREATE':
-        console.log('TODO_CREATE!')
         text = action.text.trim()
-        console.log(text)
         if (text !== '') {
           create(text)
           TodoStore.emitChange()
