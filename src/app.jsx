@@ -113,7 +113,8 @@ var Header = React.createClass({
   render: function() {
     return (
     <div className="input-group">
-      <input 
+      <input
+        style={{margin: 5}}
         value={this.state.text}
         onChange={this.handleInputChange}
         type="text"
