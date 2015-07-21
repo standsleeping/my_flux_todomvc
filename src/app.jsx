@@ -35,9 +35,7 @@ var create = function(text) {
     text: text
   }
 }
-var destroy = function(id) {
-  delete _todos[id]
-}
+
 var CHANGE_EVENT = 'change'
 var TodoStore = assign({}, EventEmitter.prototype, {
   getAll: function() {
@@ -64,11 +62,6 @@ var TodoStore = assign({}, EventEmitter.prototype, {
           create(text)
           TodoStore.emitChange()
         }
-        break
-
-      case 'TODO_DESTROY':
-        destroy(action.id)
-        TodoStore.emitChange()
         break
     }
 
