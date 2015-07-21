@@ -1,9 +1,21 @@
 var assign = require('object-assign')
 
+// Actions:
+var TodoActions = {
+  create: function(text) {
+    console.log('TodoActions::create')
+    AppDispatcher.handleViewAction({
+      actionType: 'TODO_CREATE',
+      text: text
+    })
+  }
+}
+
 // Dispatcher
 var Dispatcher = require('flux').Dispatcher
 var AppDispatcher = assign(new Dispatcher(), {
   handleViewAction: function(action) {
+    console.log('AppDispatcher::handleViewAction')
     this.dispatch({
       source: 'VIEW_ACTION',
       action: action
@@ -18,7 +30,9 @@ var _todos = {
   2: {id: 2, done: false, text: 'Number two'}
 }
 var create = function(text) {
-  return {
+  console.log('create!')
+  var id = Date.now()
+  _todos[id] = {
     id: Date.now(),
     done: false,
     text: text
@@ -43,13 +57,16 @@ var TodoStore = assign({}, EventEmitter.prototype, {
   },
 
   dispatcherIndex: AppDispatcher.register(function(payload) {
+    console.log('huh?')
     var action = payload.action
     var text
-
+    console.log(action.actionType)
     switch(action.actionType) {
 
       case 'TODO_CREATE':
+        console.log('TODO_CREATE!')
         text = action.text.trim()
+        console.log(text)
         if (text !== '') {
           create(text)
           TodoStore.emitChange()
@@ -87,12 +104,22 @@ var TodoApp = React.createClass({
   },
   render: function() {
     return <div>
+      <Header />
       <List allTodos={this.state.allTodos}/>
 
           </div>
   },
   _onChange: function() {
     this.setState(getTodoState())
+  }
+})
+
+var Header = React.createClass({
+  render: function() {
+    return <span><input onBlur={this.done}></input><button>Enter</button></span>
+  },
+  done: function() {
+    TodoActions.create(event.target.value)
   }
 })
 
