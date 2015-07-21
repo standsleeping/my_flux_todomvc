@@ -10,7 +10,7 @@ var TodoActions = {
   }
 }
 
-// Dispatcher
+// Dispatcher:
 var Dispatcher = require('flux').Dispatcher
 var AppDispatcher = assign(new Dispatcher(), {
   handleViewAction: function(action) {
@@ -21,12 +21,9 @@ var AppDispatcher = assign(new Dispatcher(), {
   }
 })
 
-// Store
+// Store:
 var EventEmitter = require('events').EventEmitter
-var _todos = {
-  1: {id: 1, done: false, text: 'Number one'},
-  2: {id: 2, done: false, text: 'Number two'}
-}
+var _todos = {}
 var create = function(text) {
   var id = Date.now()
   _todos[id] = {
@@ -69,13 +66,12 @@ var TodoStore = assign({}, EventEmitter.prototype, {
   })
 })
 
-// Components
+// Components:
 var getTodoState = function() {
   return {
     allTodos: TodoStore.getAll()
   }
 }
-
 
 var React = require('react')
 var TodoApp = React.createClass({
