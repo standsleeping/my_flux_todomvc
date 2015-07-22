@@ -9,7 +9,7 @@ var concat     = require('gulp-concat')
 var watch      = require('gulp-watch')
 
 var bundler = watchify(browserify({
-  entries: ['./src/app.jsx'],
+  entries: ['./src/using_alt.jsx'],
   transform: [reactify],
   extensions: ['.jsx'],
   debug: true,
