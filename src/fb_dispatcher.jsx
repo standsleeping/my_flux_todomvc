@@ -1,15 +1,5 @@
 var assign = require('object-assign')
 
-// Actions:
-var TodoActions = {
-  create: function(text) {
-    AppDispatcher.handleViewAction({
-      actionType: 'TODO_CREATE',
-      text: text
-    })
-  }
-}
-
 // Dispatcher:
 var Dispatcher = require('flux').Dispatcher
 var AppDispatcher = assign(new Dispatcher(), {
@@ -20,6 +10,16 @@ var AppDispatcher = assign(new Dispatcher(), {
     })
   }
 })
+
+// Action:
+var TodoActions = {
+  create: function(text) {
+    AppDispatcher.handleViewAction({
+      actionType: 'TODO_CREATE',
+      text: text
+    })
+  }
+}
 
 // Store:
 var EventEmitter = require('events').EventEmitter
